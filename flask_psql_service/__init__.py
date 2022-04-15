@@ -20,10 +20,6 @@ def create_app(config_name):
     # temporary route
     @app.route('/')
     def hello_world():
-        from .models import Result
-        result = Result('www.test.com',json.dumps({"a":1}),json.dumps({"b":2}))
-        db.session.add(result)
-        db.session.commit()
         return 'Hello, World!'
     
     migrate = Migrate(app, db)
