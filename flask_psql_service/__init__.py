@@ -1,7 +1,6 @@
 __version__ = '0.1.0'
 
 # third-party imports
-import json
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -24,10 +23,10 @@ def create_app(config_name):
         return 'Hello, World!'
 
     @app.route('/person/<id>', methods=['GET'])
-    def get_person(id):
+    def get_person(person_id: int):
         # TODO: figure out a way around circular ref here
         from .models import Person
-        person = Person.query.get(id)
+        person = Person.query.get(person_id)
         del person.__dict__['_sa_instance_state']
         return jsonify(person.__dict__)
 
