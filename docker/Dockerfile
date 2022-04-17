@@ -2,6 +2,9 @@ ARG APP_NAME=flask_psql_service
 ARG APP_PATH=/opt/$APP_NAME
 ARG PYTHON_VERSION=3.10.0
 ARG POETRY_VERSION=1.1.11
+ARG APP_ENTRY=run.py
+ARG DB_USER
+ARG DB_PASS
 
 FROM python:$PYTHON_VERSION as staging
 ARG APP_NAME
@@ -31,14 +34,14 @@ COPY ./run.py ./config.py ./
 COPY ./$APP_NAME ./$APP_NAME
 
 FROM staging as development
-ARG APP_NAME
+ARG APP_ENTRY
 ARG APP_PATH
 
 WORKDIR $APP_PATH
 RUN poetry install
 
 # set the env for running dev
-ENV FLASK_APP="run.py" \
+ENV FLASK_APP=$APP_ENTRY \
     FLASK_CONFIG=development \
     FLASK_ENV=development \
     FLASK_RUN_HOST=0.0.0.0 \

@@ -1,0 +1,35 @@
+version: '1.0'
+services:
+  flask_psql_service:
+    container_name: 'flask-psql-service'
+    image: 'flask-psql-service'
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+      args:
+        DB_USER: postgres
+        DB_PASS: postgres
+    ports:
+      - "8888:8888"
+    depends_on:
+      - psql_db
+    networks:
+      - db_network
+  psql_db:
+    container_name: psql_db
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - db_network
+networks:
+  db_network:
+    driver: bridge
+volumes:
+  pgdata: {}

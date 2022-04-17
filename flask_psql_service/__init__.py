@@ -22,7 +22,7 @@ def create_app(config_name):
     def hello_world():
         return 'Hello, World!'
 
-    @app.route('/person/<id>', methods=['GET'])
+    @app.route('/person/<person_id>', methods=['GET'])
     def get_person(person_id: int):
         # TODO: figure out a way around circular ref here
         from .models import Person
